@@ -81,11 +81,14 @@ function handleButton() {
 function handleClickInWord(text) {
     const selector = document.querySelectorAll('ul li');
     const arr = arrayFormSelector(selector);
+    const delayTime = 150; 
 
     arr.forEach((el) => {
         el.addEventListener('click', () => {
             const word = el.firstChild.textContent;
+
             markWord(text, word);
+            setTimeout(() => animateScroll(), delayTime);
         });
     })
 }
@@ -103,6 +106,27 @@ function markWord(text, word) {
     const paraph = document.querySelector('.main p');
     
     paraph.innerHTML = `"${newText}"`;
+}
+
+function animateScroll() {
+    let paramTop = window.pageYOffset;
+    const time = 1000 / 100;
+
+    const interval = setInterval(() => {
+        paramTop = paramTop - 20;
+        moveScroll(paramTop, interval);
+    }, time);
+}
+
+function moveScroll(paramTop, interval) {
+    if(paramTop > 0) {
+        window.scroll({
+            left: 0,
+            top: paramTop,
+        });
+    } else {
+        clearInterval(interval);
+    }
 }
 //init
 document.addEventListener('DOMContentLoaded', () => {
